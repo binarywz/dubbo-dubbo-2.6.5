@@ -473,6 +473,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
                     URL u = registryURL.addParameter(Constants.CLUSTER_KEY, AvailableCluster.NAME);
                     /**
                      * 创建StaticDirectory实例，并由Cluster对多个Invoker进行合并
+                     * // TODO 集群工作第一阶段，服务消费者初始化阶段
                      */
                     invoker = cluster.join(new StaticDirectory(u, invokers));
                 } else { // not a registry url

@@ -41,7 +41,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * When fails, record failure requests and schedule for retry on a regular interval.
  * Especially useful for services of notification.
- *
+ * FailbackClusterInvoker会在调用失败后，返回一个空结果给服务消费者，
+ * 并通过定时任务对失败的调用进行重传，适合执行消息通知等操作
  * <a href="http://en.wikipedia.org/wiki/Failback">Failback</a>
  *
  */
@@ -66,15 +67,24 @@ public class FailbackClusterInvoker<T> extends AbstractClusterInvoker<T> {
     }
 
     private void addFailed(Invocation invocation, AbstractClusterInvoker<?> router) {
+        /**
+         * double check
+         */
         if (retryFuture == null) {
             synchronized (this) {
                 if (retryFuture == null) {
+                    /**
+                     * 创建定时任务，每隔5s执行一次
+                     */
                     retryFuture = scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
 
                         @Override
                         public void run() {
                             // collect retry statistics
                             try {
+                                /**
+                                 * 对失败的调用重试
+                                 */
                                 retryFailed();
                             } catch (Throwable t) { // Defensive fault tolerance
                                 logger.error("Unexpected error occur at collect statistic", t);
@@ -84,6 +94,9 @@ public class FailbackClusterInvoker<T> extends AbstractClusterInvoker<T> {
                 }
             }
         }
+        /**
+         * 添加 invocation 和 invoker 到 failed 中
+         */
         failed.put(invocation, router);
     }
 
@@ -108,7 +121,13 @@ public class FailbackClusterInvoker<T> extends AbstractClusterInvoker<T> {
     protected Result doInvoke(Invocation invocation, List<Invoker<T>> invokers, LoadBalance loadbalance) throws RpcException {
         try {
             checkInvokers(invokers, invocation);
+            /**
+             * 选择Invoker
+             */
             Invoker<T> invoker = select(loadbalance, invocation, invokers, null);
+            /**
+             * 进行调用
+             */
             return invoker.invoke(invocation);
         } catch (Throwable e) {
             logger.error("Failback to invoke method " + invocation.getMethodName() + ", wait for retry in background. Ignored exception: "
