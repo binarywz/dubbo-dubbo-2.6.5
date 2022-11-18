@@ -159,6 +159,14 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         this.registry = registry;
     }
 
+    /**
+     * 订阅服务提供者信息
+     * 1.FailbackRegistry.subscribe()
+     * 2.ZookeeperRegistry.doSubscribe()
+     * 3.
+     * 最终会调用this.notify()
+     * @param url
+     */
     public void subscribe(URL url) {
         setConsumerUrl(url);
         registry.subscribe(url, this);
@@ -286,6 +294,8 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
             }
             /**
              * 将url转换成Invoker
+             * url->dubbo://192.168.56.1:20881/com.alibaba.dubbo.demo.DemoService?anyhost=true&application=demo-provider&bean.name=com.alibaba.dubbo.demo.DemoService
+             * &dubbo=2.0.2&generic=false&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=12616&side=provider&timestamp=1668783094631
              */
             Map<String, Invoker<T>> newUrlInvokerMap = toInvokers(invokerUrls);// Translate url list to Invoker map
             /**
@@ -463,8 +473,12 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
                     }
                     if (enabled) {
                         /**
-                         * 调用refer获取Invoker
+                         * 调用refer获取Invoker，在refer过程中会与服务提供者建立连接(ExchangeClient)
+                         * protocol.refer() -> DubboInvoker
                          * protocol -> Protocol$Adaptive
+                         * serviceType -> interfaceClass
+                         * url -> dubbo://192.168.56.1:20881/com.alibaba.dubbo.demo.DemoService?anyhost=true&application=demo-consumer&bean.name=com.alibaba.dubbo.demo.DemoService&check=false&dubbo=2.0.2&generic=false&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=6844&qos.port=33333&register.ip=192.168.56.1&remote.timestamp=1668783094631&side=consumer&timestamp=1668784856331
+                         * providerUrl -> dubbo://192.168.56.1:20881/com.alibaba.dubbo.demo.DemoService?anyhost=true&application=demo-provider&bean.name=com.alibaba.dubbo.demo.DemoService&dubbo=2.0.2&generic=false&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=12616&side=provider&timestamp=1668783094631
                          */
                         invoker = new InvokerDelegate<T>(protocol.refer(serviceType, url), url, providerUrl);
                     }

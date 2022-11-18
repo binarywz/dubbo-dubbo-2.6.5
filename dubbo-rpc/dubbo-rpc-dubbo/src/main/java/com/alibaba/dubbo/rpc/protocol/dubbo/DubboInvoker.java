@@ -64,15 +64,27 @@ public class DubboInvoker<T> extends AbstractInvoker<T> {
         this.invokers = invokers;
     }
 
+    /**
+     * 远程调用过程
+     * @param invocation
+     * @return
+     * @throws Throwable
+     */
     @Override
     protected Result doInvoke(final Invocation invocation) throws Throwable {
         RpcInvocation inv = (RpcInvocation) invocation;
         final String methodName = RpcUtils.getMethodName(invocation);
+        /**
+         * 设置path和version到attachment中
+         */
         inv.setAttachment(Constants.PATH_KEY, getUrl().getPath());
         inv.setAttachment(Constants.VERSION_KEY, version);
 
         ExchangeClient currentClient;
         if (clients.length == 1) {
+            /**
+             * 从数组中获取ExchangeClient
+             */
             currentClient = clients[0];
         } else {
             currentClient = clients[index.getAndIncrement() % clients.length];

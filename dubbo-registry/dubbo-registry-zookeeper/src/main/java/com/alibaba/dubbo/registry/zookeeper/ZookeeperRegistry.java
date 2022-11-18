@@ -146,6 +146,14 @@ public class ZookeeperRegistry extends FailbackRegistry {
         }
     }
 
+    /**
+     * url: consumer://192.168.56.1/com.alibaba.dubbo.demo.DemoService?application=demo-consumer&category=providers,configurators,routers&check=false
+     * &dubbo=2.0.2&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=15280&qos.port=33333&side=consumer&timestamp=1668783168042
+     *
+     * listener: 为RegistryDirectory对象
+     * @param url
+     * @param listener
+     */
     @Override
     protected void doSubscribe(final URL url, final NotifyListener listener) {
         try {
@@ -185,9 +193,20 @@ public class ZookeeperRegistry extends FailbackRegistry {
                 }
             } else {
                 List<URL> urls = new ArrayList<URL>();
+                /**
+                 * toCategoriesPath(url): ["/dubbo/com.alibaba.dubbo.demo.DemoService/providers",
+                 *                         "/dubbo/com.alibaba.dubbo.demo.DemoService/configurators",
+                 *                         "/dubbo/com.alibaba.dubbo.demo.DemoService/routers"]
+                 */
                 for (String path : toCategoriesPath(url)) {
+                    /**
+                     * Listener Map: key->RegistryDirectory, value->new ChildListener()
+                     */
                     ConcurrentMap<NotifyListener, ChildListener> listeners = zkListeners.get(url);
                     if (listeners == null) {
+                        /**
+                         * zkListeners: 保存每个服务提供者["providers","configurators","routers"]路径下的listener
+                         */
                         zkListeners.putIfAbsent(url, new ConcurrentHashMap<NotifyListener, ChildListener>());
                         listeners = zkListeners.get(url);
                     }

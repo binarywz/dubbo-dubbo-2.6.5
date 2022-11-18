@@ -258,6 +258,21 @@ public abstract class FailbackRegistry extends AbstractRegistry {
         }
     }
 
+    /**
+     * url:
+     * consumer://192.168.56.1/com.alibaba.dubbo.demo.DemoService?application=demo-consumer&category=providers,configurators,routers&check=false
+     * &dubbo=2.0.2&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=1616&qos.port=33333&side=consumer&timestamp=1668783473928
+     * urls:
+     * [dubbo://192.168.56.1:20881/com.alibaba.dubbo.demo.DemoService?anyhost=true&application=demo-provider&bean.name=com.alibaba.dubbo.demo.DemoService
+     * &dubbo=2.0.2&generic=false&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=12616&side=provider&timestamp=1668783094631,
+     * dubbo://192.168.56.1:20881/com.alibaba.dubbo.demo.DemoService?anyhost=true&application=demo-provider&bean.name=com.alibaba.dubbo.demo.DemoService
+     * &dubbo=2.0.2&generic=false&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=12616&side=provider&timestamp=1668783094631,
+     * route://0.0.0.0/com.alibaba.dubbo.demo.DemoService?category=routers&compatible_config=true&dynamic=false&enabled=true&force=true&name=null
+     * &priority=0&router=condition&rule=+%3D%3E+port+%3D+20881%2C20880+%26+host+%3D+192.168.56.1&runtime=true]
+     * @param url
+     * @param listener
+     * @param urls
+     */
     @Override
     protected void notify(URL url, NotifyListener listener, List<URL> urls) {
         if (url == null) {

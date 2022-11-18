@@ -388,7 +388,7 @@ public abstract class AbstractRegistry implements Registry {
 
     /**
      * 更新内存/文件缓存
-     * 消费者第一次订阅获取全量数据，或者后续由于定于得到新数据时，都会调用该方法进行保存
+     * 消费者第一次订阅获取全量数据，或者后续得到新数据时，都会调用该方法进行保存
      * @param url
      * @param listener
      * @param urls
@@ -428,11 +428,18 @@ public abstract class AbstractRegistry implements Registry {
             notified.putIfAbsent(url, new ConcurrentHashMap<String, List<URL>>());
             categoryNotified = notified.get(url);
         }
+        /**
+         * 通知更新服务["providers","configurators","routers"]的配置
+         * listener->RegistryDirectory
+         */
         for (Map.Entry<String, List<URL>> entry : result.entrySet()) {
             String category = entry.getKey();
             List<URL> categoryList = entry.getValue();
             categoryNotified.put(category, categoryList);
             saveProperties(url);
+            /**
+             * 刷新Invoker列表->refreshInvoker
+             */
             listener.notify(categoryList);
         }
     }

@@ -437,6 +437,7 @@ public class RegistryProtocol implements Protocol {
                         + "," + Constants.ROUTERS_CATEGORY));
         /**
          * 一个注册中心可能会有多个服务提供者，因此这里需要将多个服务提供者合并成一个
+         * 底层实例化FailoverClusterInvoker
          */
         Invoker invoker = cluster.join(directory);
         ProviderConsumerRegTable.registerConsumer(invoker, url, subscribeUrl, directory);
