@@ -394,6 +394,17 @@ public class DubboProtocol extends AbstractProtocol {
         }
     }
 
+    /**
+     * Invoker是Dubbo的核心模型和，代表一个可执行体
+     * - 在服务提供方，Invoker用于调用服务提供类
+     * - 在服务消费方，Invoker用于执行远程调用
+     * Invoker是由Protocol实现类构建而来
+     * @param serviceType
+     * @param url  URL address for the remote service
+     * @param <T>
+     * @return
+     * @throws RpcException
+     */
     @Override
     public <T> Invoker<T> refer(Class<T> serviceType, URL url) throws RpcException {
         optimizeSerialization(url);

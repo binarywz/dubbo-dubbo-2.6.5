@@ -276,7 +276,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
         }
 
         /**
-         * 列举Invoker，list()调用directory列举方法
+         * 列举Invoker，list()调用directory#list方法，里面做的是路由过滤
          */
         List<Invoker<T>> invokers = list(invocation);
         if (invokers != null && !invokers.isEmpty()) {
@@ -288,7 +288,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
         }
         RpcUtils.attachInvocationIdIfAsync(getUrl(), invocation);
         /**
-         * 调用doInvoke，由子类实现
+         * 最终调用DubboInvoker#doInvoke方法，通过负载均衡策略选择一个Invoker
          */
         return doInvoke(invocation, invokers, loadbalance);
     }

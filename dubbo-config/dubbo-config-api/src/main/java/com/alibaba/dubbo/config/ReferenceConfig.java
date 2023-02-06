@@ -359,6 +359,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
 
         //attributes are stored by system context.
         StaticContext.getSystemContext().putAll(attributes);
+        // 创建代理类
         ref = createProxy(map);
         ConsumerModel consumerModel = new ConsumerModel(getUniqueServiceName(), this, ref, interfaceClass.getMethods());
         ApplicationModel.initConsumerModel(getUniqueServiceName(), consumerModel);
@@ -404,6 +405,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
         } else { // 远程引用
             // url不为空，表明用户可能想进行点对点调用
             if (url != null && url.length() > 0) { // user specified URL, could be peer-to-peer address, or register center's address.
+                // 当需要配置多个url时，可用分号进行分割，这里会进行切分
                 String[] us = Constants.SEMICOLON_SPLIT_PATTERN.split(url);
                 if (us != null && us.length > 0) {
                     for (String u : us) {
@@ -473,7 +475,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
                     URL u = registryURL.addParameter(Constants.CLUSTER_KEY, AvailableCluster.NAME);
                     /**
                      * 创建StaticDirectory实例，并由Cluster对多个Invoker进行合并
-                     * // TODO 集群工作第一阶段，服务消费者初始化阶段
+                     * TODO 集群工作第一阶段，服务消费者初始化阶段
                      */
                     invoker = cluster.join(new StaticDirectory(u, invokers));
                 } else { // not a registry url

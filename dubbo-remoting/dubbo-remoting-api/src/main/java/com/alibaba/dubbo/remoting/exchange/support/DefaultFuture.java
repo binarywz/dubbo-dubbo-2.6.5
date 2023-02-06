@@ -59,6 +59,7 @@ public class DefaultFuture implements ResponseFuture {
     private final Request request;
     private final int timeout;
     private final Lock lock = new ReentrantLock();
+    // Condition依赖于Lock接口，生成一个Condition的基本代码是lock.newCondition()
     private final Condition done = lock.newCondition();
     private final long start = System.currentTimeMillis();
     private volatile long sent;
@@ -113,12 +114,20 @@ public class DefaultFuture implements ResponseFuture {
         }
     }
 
+    /**
+     * 消费者接收响应结果
+     * @param channel
+     * @param response
+     */
     public static void received(Channel channel, Response response) {
         try {
+            // 根据响应ID，即消费者请求时发送的ID，从缓存中找到对应的Future
             DefaultFuture future = FUTURES.remove(response.getId());
             if (future != null) {
+                // 缓存中存在对应Future，则处理响应结果
                 future.doReceived(response);
             } else {
+                // 若缓存中不存在对应Future，则表示超时
                 logger.warn("The timeout response finally returned at "
                         + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date()))
                         + ", response " + response
@@ -130,6 +139,12 @@ public class DefaultFuture implements ResponseFuture {
         }
     }
 
+    /**
+     * 消费者请求阻塞获取结果
+     * TODO 分析响应超时的处理
+     * @return
+     * @throws RemotingException
+     */
     @Override
     public Object get() throws RemotingException {
         return get(timeout);
@@ -145,6 +160,7 @@ public class DefaultFuture implements ResponseFuture {
             lock.lock();
             try {
                 while (!isDone()) {
+                    // 释放锁，等待提供者响应
                     done.await(timeout, TimeUnit.MILLISECONDS);
                     if (isDone() || System.currentTimeMillis() - start > timeout) {
                         break;
@@ -276,8 +292,10 @@ public class DefaultFuture implements ResponseFuture {
     private void doReceived(Response res) {
         lock.lock();
         try {
+            // 接收响应结果
             response = res;
             if (done != null) {
+                // 唤醒请求线程
                 done.signal();
             }
         } finally {
