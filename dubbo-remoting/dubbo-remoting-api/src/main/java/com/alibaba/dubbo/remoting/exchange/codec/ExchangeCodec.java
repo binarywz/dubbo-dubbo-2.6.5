@@ -80,14 +80,18 @@ public class ExchangeCodec extends TelnetCodec {
     @Override
     public Object decode(Channel channel, ChannelBuffer buffer) throws IOException {
         int readable = buffer.readableBytes();
+        // 创建消息头字节数组
         byte[] header = new byte[Math.min(readable, HEADER_LENGTH)];
+        // 读取消息头数据
         buffer.readBytes(header);
+        // 调用重载方法进行后续节码工作
         return decode(channel, buffer, readable, header);
     }
 
     @Override
     protected Object decode(Channel channel, ChannelBuffer buffer, int readable, byte[] header) throws IOException {
         // check magic number.
+        // 检查魔数是否相等
         if (readable > 0 && header[0] != MAGIC_HIGH
                 || readable > 1 && header[1] != MAGIC_LOW) {
             int length = header.length;
@@ -102,6 +106,7 @@ public class ExchangeCodec extends TelnetCodec {
                     break;
                 }
             }
+            // 通过telnet命令行发送的数据包不包含消息头，所以这里调用TelnetCodec的decode方法对数据包进行解码
             return super.decode(channel, buffer, readable, header);
         }
         // check length.
@@ -122,6 +127,9 @@ public class ExchangeCodec extends TelnetCodec {
         ChannelBufferInputStream is = new ChannelBufferInputStream(buffer, len);
 
         try {
+            /**
+             * 进行后续的解码工作，ExchangeCodec中实现了decodeBody方法，但因其子类DubboCodec覆写了该方法，所以在运行时DubboCodec中的decodeBody方法会被调用
+             */
             return decodeBody(channel, is, header);
         } finally {
             if (is.available() > 0) {
