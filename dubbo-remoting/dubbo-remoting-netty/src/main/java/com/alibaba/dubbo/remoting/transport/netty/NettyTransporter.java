@@ -27,6 +27,13 @@ public class NettyTransporter implements Transporter {
 
     public static final String NAME = "netty";
 
+    /**
+     * service-export-trace-9-4
+     * @param url     server url
+     * @param listener
+     * @return
+     * @throws RemotingException
+     */
     @Override
     public Server bind(URL url, ChannelHandler listener) throws RemotingException {
         /**

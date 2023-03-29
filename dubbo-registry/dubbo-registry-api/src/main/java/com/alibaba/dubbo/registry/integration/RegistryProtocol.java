@@ -100,6 +100,10 @@ public class RegistryProtocol implements Protocol {
         this.cluster = cluster;
     }
 
+    /**
+     * Dubbo的依赖注入
+     * @param protocol -> Protocol$Adaptive
+     */
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
     }
@@ -135,10 +139,18 @@ public class RegistryProtocol implements Protocol {
         registry.register(registedProviderUrl);
     }
 
+    /**
+     * service-export-trace-7-2
+     * @param originInvoker
+     * @param <T>
+     * @return
+     * @throws RpcException
+     */
     @Override
     public <T> Exporter<T> export(final Invoker<T> originInvoker) throws RpcException {
         //export invoker
         /**
+         * service-export-trace-7-3
          * 服务导出，重点
          * 1.解析providerUrl: String export = origininvoker.getUrl().getParameterAndDecoded(Constants.EXPORT_KEY);
          *   zookeeper://127.0.0.1:2181/com.alibaba.dubbo.registry.RegistryService?application=demo-provider&dubbo=2.0.2
@@ -208,6 +220,7 @@ public class RegistryProtocol implements Protocol {
     }
 
     /**
+     * service-export-trace-7-4
      * originInvoker是proxyFactory.getInvoker()返回的
      * @param originInvoker
      * @param <T>
@@ -233,7 +246,9 @@ public class RegistryProtocol implements Protocol {
                      */
                     final Invoker<?> invokerDelegete = new InvokerDelegete<T>(originInvoker, getProviderUrl(originInvoker));
                     /**
+                     * service-export-trace-7-5
                      * 调用protocol的export方法导出服务
+                     * DubboProtocol.export()
                      */
                     exporter = new ExporterChangeableWrapper<T>((Exporter<T>) protocol.export(invokerDelegete), originInvoker);
                     /**

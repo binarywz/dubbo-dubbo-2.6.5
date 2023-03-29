@@ -40,6 +40,11 @@ public abstract class AbstractEndpoint extends AbstractPeer implements Resetable
 
     private int connectTimeout;
 
+    /**
+     * service-export-trace-10-1
+     * @param url
+     * @param handler
+     */
     public AbstractEndpoint(URL url, ChannelHandler handler) {
         super(url, handler);
         this.codec = getChannelCodec(url);

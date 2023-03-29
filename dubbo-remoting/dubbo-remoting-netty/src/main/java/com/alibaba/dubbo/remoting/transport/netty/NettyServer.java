@@ -57,6 +57,12 @@ public class NettyServer extends AbstractServer implements Server {
 
     private org.jboss.netty.channel.Channel channel;
 
+    /**
+     * service-export-trace-10
+     * @param url
+     * @param handler
+     * @throws RemotingException
+     */
     public NettyServer(URL url, ChannelHandler handler) throws RemotingException {
         /**
          * 调用父类(AbstractServer)构造方法
@@ -64,6 +70,10 @@ public class NettyServer extends AbstractServer implements Server {
         super(url, ChannelHandlers.wrap(handler, ExecutorUtil.setThreadName(url, SERVER_THREAD_POOL_NAME)));
     }
 
+    /**
+     * service-export-trace-10-3
+     * @throws Throwable
+     */
     @Override
     protected void doOpen() throws Throwable {
         NettyHelper.setNettyLoggerFactory();

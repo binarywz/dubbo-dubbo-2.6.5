@@ -41,6 +41,7 @@ public class Transporters {
     }
 
     /**
+     * service-export-trace-9-2
      * 服务提供者导出服务
      * @param url
      * @param handlers
@@ -64,6 +65,7 @@ public class Transporters {
             handler = new ChannelHandlerDispatcher(handlers);
         }
         /**
+         * service-export-trace-9-3
          * 获取自适应Transporter实例，并调用实例方法
          * getTransporter()方法获取的Transporter是在运行时创建的，类名为Transporter$Adaptive，
          * 即自适应扩展类。Transporter$Adaptive会在运行时根据传入的URL参数决定加载什么类型的Transporter，

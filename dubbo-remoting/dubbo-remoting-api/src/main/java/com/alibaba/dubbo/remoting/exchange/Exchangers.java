@@ -59,6 +59,13 @@ public class Exchangers {
         return bind(URL.valueOf(url), handler);
     }
 
+    /**
+     * service-export-trace-8-6
+     * @param url
+     * @param handler
+     * @return
+     * @throws RemotingException
+     */
     public static ExchangeServer bind(URL url, ExchangeHandler handler) throws RemotingException {
         if (url == null) {
             throw new IllegalArgumentException("url == null");
@@ -68,6 +75,7 @@ public class Exchangers {
         }
         url = url.addParameterIfAbsent(Constants.CODEC_KEY, "exchange");
         /**
+         * service-export-trace-8-7
          * 获取Exchanger，默认为HeaderExchanger
          * 紧接着调用HeaderExchange的bind方法创建Exchanger实例
          */
@@ -116,12 +124,25 @@ public class Exchangers {
         return getExchanger(url).connect(url, handler);
     }
 
+    /**
+     * service-export-trace-8-8
+     * @param url
+     * @return
+     */
     public static Exchanger getExchanger(URL url) {
         String type = url.getParameter(Constants.EXCHANGER_KEY, Constants.DEFAULT_EXCHANGER);
         return getExchanger(type);
     }
 
+    /**
+     * service-export-trace-8-9
+     * @param type
+     * @return
+     */
     public static Exchanger getExchanger(String type) {
+        /**
+         * Exchanger -> HeaderExchanger
+         */
         return ExtensionLoader.getExtensionLoader(Exchanger.class).getExtension(type);
     }
 

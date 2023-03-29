@@ -240,6 +240,13 @@ public class DubboProtocol extends AbstractProtocol {
         return DEFAULT_PORT;
     }
 
+    /**
+     * service-export-trace-7-6
+     * @param invoker Service invoker
+     * @param <T>
+     * @return
+     * @throws RpcException
+     */
     @Override
     public <T> Exporter<T> export(Invoker<T> invoker) throws RpcException {
         URL url = invoker.getUrl();
@@ -278,6 +285,7 @@ public class DubboProtocol extends AbstractProtocol {
         }
 
         /**
+         * service-export-trace-8-1
          * 启动服务器
          */
         openServer(url);
@@ -286,6 +294,7 @@ public class DubboProtocol extends AbstractProtocol {
     }
 
     /**
+     * service-export-trace-8-2
      * 启动服务器
      * 在同一台机器上（单网卡），同一个端口上仅允许启动一个服务器实例
      * @param url
@@ -305,6 +314,7 @@ public class DubboProtocol extends AbstractProtocol {
             ExchangeServer server = serverMap.get(key);
             if (server == null) {
                 /**
+                 * service-export-trace-8-3
                  * 创建服务器实例
                  */
                 serverMap.put(key, createServer(url));
@@ -319,6 +329,7 @@ public class DubboProtocol extends AbstractProtocol {
     }
 
     /**
+     * service-export-trace-8-4
      * 1.检测是否存在server参数所代表的Transporter扩展，不存在则抛出异常
      * 2.创建服务器实例
      * 3.检测是否支持client参数所表示的Transporter扩展，不存在则抛出异常
@@ -351,6 +362,7 @@ public class DubboProtocol extends AbstractProtocol {
         ExchangeServer server;
         try {
             /**
+             * service-export-trace-8-5
              * 创建ExchangeServer
              */
             server = Exchangers.bind(url, requestHandler);

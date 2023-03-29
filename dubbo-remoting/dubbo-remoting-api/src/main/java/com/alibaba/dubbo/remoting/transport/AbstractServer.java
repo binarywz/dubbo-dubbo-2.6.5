@@ -47,6 +47,12 @@ public abstract class AbstractServer extends AbstractEndpoint implements Server 
     private int accepts;
     private int idleTimeout = 600; //600 seconds
 
+    /**
+     * service-export-trace-2
+     * @param url
+     * @param handler
+     * @throws RemotingException
+     */
     public AbstractServer(URL url, ChannelHandler handler) throws RemotingException {
         // 调用父类构造函数，没什么复杂逻辑
         super(url, handler);
@@ -68,6 +74,7 @@ public abstract class AbstractServer extends AbstractEndpoint implements Server 
         this.idleTimeout = url.getParameter(Constants.IDLE_TIMEOUT_KEY, Constants.DEFAULT_IDLE_TIMEOUT);
         try {
             /**
+             * service-export-trace-10-3
              * 调用模板方法doOpen()启动服务器，模板模式
              */
             doOpen();
