@@ -110,6 +110,13 @@ public class Exchangers {
         return connect(URL.valueOf(url), handler);
     }
 
+    /**
+     * service-refer-trace-4-6-22
+     * @param url
+     * @param handler
+     * @return
+     * @throws RemotingException
+     */
     public static ExchangeClient connect(URL url, ExchangeHandler handler) throws RemotingException {
         if (url == null) {
             throw new IllegalArgumentException("url == null");
@@ -126,6 +133,7 @@ public class Exchangers {
 
     /**
      * service-export-trace-8-8
+     * service-refer-trace-4-6-23
      * @param url
      * @return
      */
@@ -136,6 +144,7 @@ public class Exchangers {
 
     /**
      * service-export-trace-8-9
+     * service-refer-trace-4-6-24
      * @param type
      * @return
      */

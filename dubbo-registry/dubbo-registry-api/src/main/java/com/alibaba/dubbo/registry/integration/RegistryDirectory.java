@@ -160,6 +160,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
     }
 
     /**
+     * service-refer-trace-4-6-1
      * 订阅服务提供者信息
      * 1.FailbackRegistry.subscribe()
      * 2.ZookeeperRegistry.doSubscribe()
@@ -194,6 +195,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
     }
 
     /**
+     * service-refer-trace-4-6-10
      * 接收服务变更通知
      * @param urls The list of registered information , is always not empty. The meaning is the same as the return value of {@link com.alibaba.dubbo.registry.RegistryService#lookup(URL)}.
      */
@@ -246,12 +248,14 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         }
         // providers
         /**
+         * service-refer-trace-4-6-11
          * 刷新Invoker列表，重点
          */
         refreshInvoker(invokerUrls);
     }
 
     /**
+     * service-refer-trace-4-6-12
      * Convert the invokerURL list to the Invoker Map. The rules of the conversion are as follows:
      * 1.If URL has been converted to invoker, it is no longer re-referenced and obtained directly from the cache, and notice that any parameter changes in the URL will be re-referenced.
      * 2.If the incoming invoker list is not empty, it means that it is the latest invoker list
@@ -293,6 +297,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
                 return;
             }
             /**
+             * service-refer-trace-4-6-13
              * 将url转换成Invoker
              * url->dubbo://192.168.56.1:20881/com.alibaba.dubbo.demo.DemoService?anyhost=true&application=demo-provider&bean.name=com.alibaba.dubbo.demo.DemoService
              * &dubbo=2.0.2&generic=false&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=12616&side=provider&timestamp=1668783094631
@@ -399,6 +404,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
     }
 
     /**
+     * service-refer-trace-4-6-14
      * Turn urls into invokers, and if url has been refer, will not re-reference.
      *
      * @param urls
@@ -473,6 +479,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
                     }
                     if (enabled) {
                         /**
+                         * service-refer-trace-4-6-15
                          * 调用refer获取Invoker，在refer过程中会与服务提供者建立连接(ExchangeClient)
                          * protocol.refer() -> DubboInvoker
                          * protocol -> Protocol$Adaptive

@@ -30,6 +30,7 @@ import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.support.AbstractBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -39,6 +40,9 @@ import java.util.Map;
 
 /**
  * ReferenceFactoryBean
+ * 原理: 在从Spring容器中获取Bean的时候，若Bean是FactoryBean类型的，则调用factory.getObject()来创建Bean，方便扩展Spring
+ * {@link org.springframework.beans.factory.support.AbstractBeanFactory#getBean(java.lang.String)}
+ * {@link AbstractBeanFactory#doGetBean(java.lang.String, java.lang.Class, java.lang.Object[], boolean)}
  *
  * @export
  */
@@ -62,6 +66,11 @@ public class ReferenceBean<T> extends ReferenceConfig<T> implements FactoryBean,
         SpringExtensionFactory.addApplicationContext(applicationContext);
     }
 
+    /**
+     * service-refer-trace-1
+     * @return
+     * @throws Exception
+     */
     @Override
     public Object getObject() throws Exception {
         return get();

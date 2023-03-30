@@ -354,6 +354,7 @@ public class RegistryProtocol implements Protocol {
     }
 
     /**
+     * service-refer-trace-4-5-1
      * 服务引用
      * 1.为url设置协议头
      * 2.根据url参数加载注册中心实例
@@ -385,6 +386,7 @@ public class RegistryProtocol implements Protocol {
         // group="a,b" or group="*"
         Map<String, String> qs = StringUtils.parseQueryString(url.getParameterAndDecoded(Constants.REFER_KEY));
         /**
+         * service-refer-trace-4-5-2
          * 获取group配置
          */
         String group = qs.get(Constants.GROUP_KEY);
@@ -397,7 +399,10 @@ public class RegistryProtocol implements Protocol {
                 return doRefer(getMergeableCluster(), registry, type, url);
             }
         }
-        // 调用 doRefer 继续执行服务引用逻辑
+        /**
+         * service-refer-trace-4-5-2
+         * 调用 doRefer 继续执行服务引用逻辑
+         */
         return doRefer(cluster, registry, type, url);
     }
 
@@ -406,6 +411,7 @@ public class RegistryProtocol implements Protocol {
     }
 
     /**
+     * service-refer-trace-4-5-3
      * 1.创建一个RegistryDirectory
      * 2.生成服务消费者链接，并向注册中心注册
      * 3.注册完毕后订阅providers/configurators/routers等节点下的数据
@@ -443,6 +449,7 @@ public class RegistryProtocol implements Protocol {
                     Constants.CHECK_KEY, String.valueOf(false)));
         }
         /**
+         * service-refer-trace-4-6
          * 订阅providers/configurators/routers等节点数据
          * TODO 分析RegistryDirectory流程
          */
@@ -451,6 +458,7 @@ public class RegistryProtocol implements Protocol {
                         + "," + Constants.CONFIGURATORS_CATEGORY
                         + "," + Constants.ROUTERS_CATEGORY));
         /**
+         * service-refer-trace-4-7
          * 一个注册中心可能会有多个服务提供者，因此这里需要将多个服务提供者合并成一个
          * 底层实例化FailoverClusterInvoker
          */

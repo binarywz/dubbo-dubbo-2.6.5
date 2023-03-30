@@ -147,6 +147,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
     }
 
     /**
+     * service-refer-trace-4-6-3
      * url: consumer://192.168.56.1/com.alibaba.dubbo.demo.DemoService?application=demo-consumer&category=providers,configurators,routers&check=false
      * &dubbo=2.0.2&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=15280&qos.port=33333&side=consumer&timestamp=1668783168042
      *
@@ -226,6 +227,9 @@ public class ZookeeperRegistry extends FailbackRegistry {
                         urls.addAll(toUrlsWithEmpty(url, path, children));
                     }
                 }
+                /**
+                 * service-refer-trace-4-6-4
+                 */
                 notify(url, listener, urls);
             }
         } catch (Throwable e) {

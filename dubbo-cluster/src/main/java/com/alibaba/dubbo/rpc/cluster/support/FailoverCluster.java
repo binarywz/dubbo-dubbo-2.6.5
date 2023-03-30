@@ -29,6 +29,13 @@ public class FailoverCluster implements Cluster {
 
     public final static String NAME = "failover";
 
+    /**
+     * service-refer-trace-4-5-5
+     * @param directory
+     * @param <T>
+     * @return
+     * @throws RpcException
+     */
     @Override
     public <T> Invoker<T> join(Directory<T> directory) throws RpcException {
         // 创建并返回FailoverClusterInvoker对象

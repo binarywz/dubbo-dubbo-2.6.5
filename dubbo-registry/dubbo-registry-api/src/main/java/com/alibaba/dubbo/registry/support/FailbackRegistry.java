@@ -191,6 +191,11 @@ public abstract class FailbackRegistry extends AbstractRegistry {
         }
     }
 
+    /**
+     * service-refer-trace-4-6-2
+     * @param url
+     * @param listener
+     */
     @Override
     public void subscribe(URL url, NotifyListener listener) {
         super.subscribe(url, listener);
@@ -259,6 +264,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     }
 
     /**
+     * service-refer-trace-4-6-5
      * url:
      * consumer://192.168.56.1/com.alibaba.dubbo.demo.DemoService?application=demo-consumer&category=providers,configurators,routers&check=false
      * &dubbo=2.0.2&interface=com.alibaba.dubbo.demo.DemoService&methods=sayHello&pid=1616&qos.port=33333&side=consumer&timestamp=1668783473928
@@ -282,6 +288,9 @@ public abstract class FailbackRegistry extends AbstractRegistry {
             throw new IllegalArgumentException("notify listener == null");
         }
         try {
+            /**
+             * service-refer-trace-4-6-6
+             */
             doNotify(url, listener, urls);
         } catch (Exception t) {
             // Record a failed registration request to a failed list, retry regularly
@@ -295,6 +304,12 @@ public abstract class FailbackRegistry extends AbstractRegistry {
         }
     }
 
+    /**
+     * service-refer-trace-4-6-7
+     * @param url
+     * @param listener
+     * @param urls
+     */
     protected void doNotify(URL url, NotifyListener listener, List<URL> urls) {
         super.notify(url, listener, urls);
     }

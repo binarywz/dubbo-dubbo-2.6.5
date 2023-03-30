@@ -155,6 +155,10 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
         return urls;
     }
 
+    /**
+     * service-refer-trace-2
+     * @return
+     */
     public synchronized T get() {
         if (destroyed) {
             throw new IllegalStateException("Already destroyed!");
@@ -183,6 +187,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
     }
 
     /**
+     * service-refer-trace-3
      * 主要工作:
      * 1.检测ConsumerConfig实例是否存在，若不存在则创建一个新的实例
      * 2.
@@ -359,13 +364,17 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
 
         //attributes are stored by system context.
         StaticContext.getSystemContext().putAll(attributes);
-        // 创建代理类
+        /**
+         * service-refer-trace-4
+         * 创建代理类
+         */
         ref = createProxy(map);
         ConsumerModel consumerModel = new ConsumerModel(getUniqueServiceName(), this, ref, interfaceClass.getMethods());
         ApplicationModel.initConsumerModel(getUniqueServiceName(), consumerModel);
     }
 
     /**
+     * service-refer-trace-4-1
      * 创建代理对象，并且会调用其他方法构建并合并Invoker实例
      * @param map
      * @return
@@ -446,6 +455,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
             }
 
             /**
+             * service-refer-trace-5
              * 单个注册中心或服务提供者
              */
             if (urls.size() == 1) {
@@ -498,8 +508,11 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
         if (logger.isInfoEnabled()) {
             logger.info("Refer dubbo service " + interfaceClass.getName() + " from url " + invoker.getUrl());
         }
-        // 生成代理类
-        // create service proxy
+        /**
+         * service-refer-trace-6
+         * 生成代理类
+         * create service proxy
+         */
         return (T) proxyFactory.getProxy(invoker);
     }
 

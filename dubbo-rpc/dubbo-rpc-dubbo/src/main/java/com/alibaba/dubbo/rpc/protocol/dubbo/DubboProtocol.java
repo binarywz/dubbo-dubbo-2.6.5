@@ -423,6 +423,7 @@ public class DubboProtocol extends AbstractProtocol {
     }
 
     /**
+     * service-refer-trace-4-6-16
      * Invoker是Dubbo的核心模型和，代表一个可执行体
      * - 在服务提供方，Invoker用于调用服务提供类
      * - 在服务消费方，Invoker用于执行远程调用
@@ -438,6 +439,7 @@ public class DubboProtocol extends AbstractProtocol {
         optimizeSerialization(url);
         // create rpc invoker.
         /**
+         * service-refer-trace-4-6-17
          * 创建DubboInvoker
          */
         DubboInvoker<T> invoker = new DubboInvoker<T>(serviceType, url, getClients(url), invokers);
@@ -446,6 +448,7 @@ public class DubboProtocol extends AbstractProtocol {
     }
 
     /**
+     * service-refer-trace-4-6-18
      * 获取客户端实例
      * @param url
      * @return
@@ -467,6 +470,9 @@ public class DubboProtocol extends AbstractProtocol {
             connections = 1;
         }
 
+        /**
+         * service-refer-trace-4-6-19
+         */
         ExchangeClient[] clients = new ExchangeClient[connections];
         for (int i = 0; i < clients.length; i++) {
             if (service_share_connect) {
@@ -521,6 +527,7 @@ public class DubboProtocol extends AbstractProtocol {
     }
 
     /**
+     * service-refer-trace-4-6-20
      * Create new connection
      * 初始化新的客户端
      */
@@ -561,6 +568,9 @@ public class DubboProtocol extends AbstractProtocol {
                  */
                 client = new LazyConnectExchangeClient(url, requestHandler);
             } else {
+                /**
+                 * service-refer-trace-4-6-21
+                 */
                 // 创建普通ExchangeClient实例
                 client = Exchangers.connect(url, requestHandler);
             }

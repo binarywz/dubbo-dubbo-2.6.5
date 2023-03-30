@@ -34,6 +34,13 @@ public class HeaderExchanger implements Exchanger {
 
     public static final String NAME = "header";
 
+    /**
+     * service-refer-trace-4-6-25
+     * @param url
+     * @param handler
+     * @return
+     * @throws RemotingException
+     */
     @Override
     public ExchangeClient connect(URL url, ExchangeHandler handler) throws RemotingException {
         /**

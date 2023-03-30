@@ -387,6 +387,7 @@ public abstract class AbstractRegistry implements Registry {
     }
 
     /**
+     * service-refer-trace-4-6-8
      * 更新内存/文件缓存
      * 消费者第一次订阅获取全量数据，或者后续得到新数据时，都会调用该方法进行保存
      * @param url
@@ -438,6 +439,7 @@ public abstract class AbstractRegistry implements Registry {
             categoryNotified.put(category, categoryList);
             saveProperties(url);
             /**
+             * service-refer-trace-4-6-9
              * 刷新Invoker列表->refreshInvoker
              */
             listener.notify(categoryList);
