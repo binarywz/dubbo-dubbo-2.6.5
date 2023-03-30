@@ -111,6 +111,7 @@ public class DubboInvoker<T> extends AbstractInvoker<T> {
     }
 
     /**
+     * service-invoke-trace-3-5-1
      * 远程调用过程
      * @param invocation
      * @return

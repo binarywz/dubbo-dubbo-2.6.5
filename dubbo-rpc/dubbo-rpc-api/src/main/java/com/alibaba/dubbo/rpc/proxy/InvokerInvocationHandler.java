@@ -33,6 +33,14 @@ public class InvokerInvocationHandler implements InvocationHandler {
         this.invoker = handler;
     }
 
+    /**
+     * service-invoke-trace-1
+     * @param proxy
+     * @param method
+     * @param args
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         String methodName = method.getName();
@@ -53,6 +61,7 @@ public class InvokerInvocationHandler implements InvocationHandler {
             return invoker.equals(args[0]);
         }
         /**
+         * service-invoke-trace-1-1
          * 将method和args封装到RpcInvocation中，并执行后续的调用
          * 此处invoker成员变量类型为MockClusterInvoker
          */

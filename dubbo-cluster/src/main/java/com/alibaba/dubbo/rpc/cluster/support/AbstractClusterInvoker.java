@@ -94,6 +94,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
     }
 
     /**
+     * service-invoke-trace-3-4-2
      * Select a invoker using loadbalance policy.</br>
      * a)Firstly, select an invoker using loadbalance. If this invoker is in previously selected list, or, 
      * if this invoker is unavailable, then continue step b (reselect), otherwise return the first selected invoker</br>
@@ -138,6 +139,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
             }
         }
         /**
+         * service-invoke-trace-3-4-3
          * 如果走到此处，说明前面的stickyInvoker为空，或者不可用
          * 此时继续调用doSelect方法选择Invoker
          */
@@ -149,6 +151,15 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
         return invoker;
     }
 
+    /**
+     * service-invoke-trace-3-4-4
+     * @param loadbalance
+     * @param invocation
+     * @param invokers
+     * @param selected
+     * @return
+     * @throws RpcException
+     */
     private Invoker<T> doSelect(LoadBalance loadbalance, Invocation invocation, List<Invoker<T>> invokers, List<Invoker<T>> selected) throws RpcException {
         if (invokers == null || invokers.isEmpty())
             return null;
@@ -161,6 +172,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
             loadbalance = ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension(Constants.DEFAULT_LOADBALANCE);
         }
         /**
+         * service-invoke-trace-3-4-5
          * 通过负载均衡组件选择Invoker
          */
         Invoker<T> invoker = loadbalance.select(invokers, getUrl(), invocation);
@@ -256,6 +268,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
     }
 
     /**
+     * service-invoke-trace-3
      * 服务消费者远程调用
      * @param invocation
      * @return
@@ -276,6 +289,8 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
         }
 
         /**
+         * service-invoke-trace-3-1
+         * 根据参数从Directory中获取Invoker列表
          * 列举Invoker，list()调用directory#list方法，里面做的是路由过滤
          */
         List<Invoker<T>> invokers = list(invocation);
@@ -288,6 +303,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
         }
         RpcUtils.attachInvocationIdIfAsync(getUrl(), invocation);
         /**
+         * service-invoke-trace-3-3
          * 最终调用DubboInvoker#doInvoke方法，通过负载均衡策略选择一个Invoker
          */
         return doInvoke(invocation, invokers, loadbalance);

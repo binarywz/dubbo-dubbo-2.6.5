@@ -51,6 +51,8 @@ public class FailoverClusterInvoker<T> extends AbstractClusterInvoker<T> {
     }
 
     /**
+     * service-invoke-trace-3-4
+     * Cluster容错调用Invoker
      * 1.获取重试次数，根据重试次数进行循环调用
      * 2.每次循环调用，首先通过负载均衡组件选择一个invoker，然后通过这个invoker的invoke方法进行远程调用
      * @param invocation
@@ -92,6 +94,7 @@ public class FailoverClusterInvoker<T> extends AbstractClusterInvoker<T> {
                 checkInvokers(copyinvokers, invocation);
             }
             /**
+             * service-invoke-trace-3-4-1
              * 通过负载均衡选择Invoker
              */
             Invoker<T> invoker = select(loadbalance, invocation, copyinvokers, invoked);
@@ -102,6 +105,7 @@ public class FailoverClusterInvoker<T> extends AbstractClusterInvoker<T> {
             RpcContext.getContext().setInvokers((List) invoked);
             try {
                 /**
+                 * service-invoke-trace-3-5
                  * 调用目标Invoker的invoke方法
                  */
                 Result result = invoker.invoke(invocation);

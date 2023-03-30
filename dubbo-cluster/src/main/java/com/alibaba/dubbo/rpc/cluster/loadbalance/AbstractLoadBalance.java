@@ -35,6 +35,14 @@ public abstract class AbstractLoadBalance implements LoadBalance {
         return ww < 1 ? 1 : (ww > weight ? weight : ww);
     }
 
+    /**
+     * service-invoke-trace-3-4-6
+     * @param invokers   invokers.
+     * @param url        refer url
+     * @param invocation invocation.
+     * @param <T>
+     * @return
+     */
     @Override
     public <T> Invoker<T> select(List<Invoker<T>> invokers, URL url, Invocation invocation) {
         if (invokers == null || invokers.isEmpty())

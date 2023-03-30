@@ -68,6 +68,7 @@ public abstract class AbstractDirectory<T> implements Directory<T> {
     }
 
     /**
+     * service-invoke-trace-3-2
      * 列举Invoker列表
      * 1.调用doList方法获取Invoker列表
      * 2.根据Router的getUrl返回及runtime参数决定是否进行服务路由
@@ -81,10 +82,12 @@ public abstract class AbstractDirectory<T> implements Directory<T> {
             throw new RpcException("Directory already destroyed .url: " + getUrl());
         }
         /**
+         * service-invoke-trace-3-2-1
          * 调用doList方法列举Invoker，doList是模板方法，由子类实现(此处默认为RegistryDirectory)
          */
         List<Invoker<T>> invokers = doList(invocation);
         /**
+         * service-invoke-trace-3-2-3
          * 获取路由Router列表
          */
         List<Router> localRouters = this.routers; // local reference
@@ -96,7 +99,10 @@ public abstract class AbstractDirectory<T> implements Directory<T> {
                      * 这个对性能会造成影响，配置时需注意。
                      */
                     if (router.getUrl() == null || router.getUrl().getParameter(Constants.RUNTIME_KEY, false)) {
-                        // 进行服务路由
+                        /**
+                         * service-invoke-trace-3-2-4
+                         * 进行服务路由
+                         */
                         invokers = router.route(invokers, getConsumerUrl(), invocation);
                     }
                 } catch (Throwable t) {
